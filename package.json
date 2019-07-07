@@ -30,6 +30,7 @@
   "scripts": {
     "db:migrate": "sequelize db:migrate",
     "db:seed": "sequelize db:seed:all",
+    "sequelize": "sequelize",
     "start": "node ./src/server.js",
     "dev": "nodemon --inspect ./src/server.js",
     "test": "mocha **/*.test.js"

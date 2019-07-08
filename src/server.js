@@ -1,4 +1,3 @@
-process.env["NODE_CONFIG_DIR"] = __dirname + "/config/";
 const express = require("express");
 const { join } = require("path");
 const cors = require("cors");

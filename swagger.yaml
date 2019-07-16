@@ -12,53 +12,49 @@ info:
 host: "localhost"
 basePath: "/v1"
 schemes:
-- "https"
-- "http"
+  - "https"
+  - "http"
 paths:
   /posts:
     post:
       tags:
-      - "post"
+        - "post"
       summary: "Add a new post"
       description: ""
       operationId: "addPost"
       consumes:
-      - "application/json"
-      - "application/xml"
+        - "application/json"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Post object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Post"
+        - in: "body"
+          name: "body"
+          description: "Post object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Post"
       responses:
+        200:
+          description: "sucess"
         405:
           description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:posts"
-        - "read:posts"
+
   /posts/{postId}:
     get:
       tags:
-      - "post"
+        - "post"
       summary: "Find post by ID"
       description: "Returns a single post"
       operationId: "getPostById"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "postId"
-        in: "path"
-        description: "ID of post to return"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "postId"
+          in: "path"
+          description: "ID of post to return"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         200:
           description: "successful operation"
@@ -69,85 +65,84 @@ paths:
         404:
           description: "post not found"
       security:
-      - api_key: []
+        - api_key: []
     put:
       tags:
-      - "post"
+        - "post"
       summary: "Updates a post in the store with form data"
       description: ""
       operationId: "updatePostWithForm"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/json"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "postId"
-        in: "path"
-        description: "ID of post that needs to be updated"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "title"
-        in: "application/json"
-        description: "Updated name of the post"
-        required: false
-        type: "string"
-      - name: "text"
-        in: "application/json"
-        description: "Updated text of the post"
-        required: false
-        type: "string"
+        - name: "postId"
+          in: "path"
+          description: "ID of post that needs to be updated"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "title"
+          in: "application/json"
+          description: "Updated name of the post"
+          required: false
+          type: "string"
+        - name: "text"
+          in: "application/json"
+          description: "Updated text of the post"
+          required: false
+          type: "string"
       responses:
         405:
           description: "Invalid input"
       security:
-      - post_auth:
-        - "write:posts"
-        - "read:posts"
+        - post_auth:
+            - "write:posts"
+            - "read:posts"
     delete:
       tags:
-      - "post"
+        - "post"
       summary: "Deletes a post"
       description: ""
       operationId: "deletePost"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/xml"
+        - "application/json"
       parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
-      - name: "postId"
-        in: "path"
-        description: "Post id to delete"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "api_key"
+          in: "header"
+          required: false
+          type: "string"
+        - name: "postId"
+          in: "path"
+          description: "Post id to delete"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         400:
           description: "Invalid ID supplied"
         404:
           description: "Post not found"
-          
+
   /posts/{postId}/comments:
     get:
       tags:
-      - "comments"
+        - "comments"
       summary: "Find all comments by postID"
       description: "Returns an array of posts"
       operationId: "getCommentsByPostId"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/xml"
+        - "application/json"
       parameters:
-      - name: "postId"
-        in: "path"
-        description: "ID of post to return comments"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "postId"
+          in: "path"
+          description: "ID of post to return comments"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         200:
           description: "successful operation"
@@ -158,58 +153,58 @@ paths:
         404:
           description: "post not found"
       security:
-      - api_key: []
+        - api_key: []
   /posts/{postId}/comments/{commentId}:
     put:
       tags:
-      - "comment"
+        - "comment"
       summary: "Updates a comment in the store with  data"
       description: ""
       operationId: "updateComment"
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "postId"
-        in: "path"
-        description: "ID of post that needs to be updated"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "commentId"
-        in: "path"
-        description: "Updated commentID of the post"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "text"
-        in: "application/json"
-        description: "Updated text of the comment"
-        required: false
-        type: "string"
+        - name: "postId"
+          in: "path"
+          description: "ID of post that needs to be updated"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "commentId"
+          in: "path"
+          description: "Updated commentID of the post"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "text"
+          in: "application/json"
+          description: "Updated text of the comment"
+          required: false
+          type: "string"
       responses:
         405:
           description: "Invalid input"
       security:
-      - post_auth:
-        - "write:comments"
-        - "read:comments"
+        - post_auth:
+            - "write:comments"
+            - "read:comments"
     delete:
       tags:
-      - "comment"
+        - "comment"
       summary: "Deletes a comment"
       description: ""
       operationId: "deleteComment"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "commentId"
-        in: "path"
-        description: "comment id to delete"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "commentId"
+          in: "path"
+          description: "comment id to delete"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         400:
           description: "Invalid ID supplied"
@@ -219,19 +214,19 @@ paths:
   /user/{username}:
     get:
       tags:
-      - "user"
+        - "user"
       summary: "Get user by user name"
       description: ""
       operationId: "getUserByName"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/xml"
+        - "application/json"
       parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be fetched. Use user1 for testing. "
-        required: true
-        type: "string"
+        - name: "username"
+          in: "path"
+          description: "The name that needs to be fetched. Use user1 for testing. "
+          required: true
+          type: "string"
       responses:
         200:
           description: "successful operation"
@@ -243,25 +238,25 @@ paths:
           description: "User not found"
     put:
       tags:
-      - "user"
+        - "user"
       summary: "Updated user"
       description: "This can only be done by the logged in user."
       operationId: "updateUser"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/xml"
+        - "application/json"
       parameters:
-      - name: "username"
-        in: "path"
-        description: "name that need to be updated"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "body"
-        description: "Updated user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
+        - name: "username"
+          in: "path"
+          description: "name that need to be updated"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Updated user object"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
       responses:
         400:
           description: "Invalid user supplied"
@@ -269,19 +264,19 @@ paths:
           description: "User not found"
     delete:
       tags:
-      - "user"
+        - "user"
       summary: "Delete user"
       description: "This can only be done by the logged in user."
       operationId: "deleteUser"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/xml"
+        - "application/json"
       parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be deleted"
-        required: true
-        type: "string"
+        - name: "username"
+          in: "path"
+          description: "The name that needs to be deleted"
+          required: true
+          type: "string"
       responses:
         400:
           description: "Invalid username supplied"

@@ -1,11 +1,10 @@
 const express = require("express");
 const { join } = require("path");
 const cors = require("cors");
-const config = require("config");
 const swagger = require("./routes/swagger.js");
 const path = tail => join(__dirname, tail);
-const port = config.get("port");
-
+const posts = require("./routes/posts");
+const comments = require("./routes/comments");
 const router = express.Router().use("/", swagger);
 
 const service = express()
@@ -18,9 +17,11 @@ const service = express()
     })
   )
   .use("/", router)
+  .use("/posts", posts)
+  .use("/comments", comments)
   //   .use((req, res) => res.sendFile(path('../public/index.html')))
-  .listen(port, () => {
-    console.log(`Listening on :${port}`);
+  .listen(3000, () => {
+    console.log(`Listening on : 3000`);
   });
 
 module.exports = { service };

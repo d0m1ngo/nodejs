@@ -1,5 +1,4 @@
-const Models = require("../models");
-
 module.exports = {
-  postsController: require("../controllers/postController")(Models)
+  postsController: require("../controllers/postController")(),
+  commentController: require("../controllers/commentController")()
 };

@@ -1,19 +1,26 @@
 const fs = require("fs");
 const path = require("path");
 const fileName = path.join(__dirname, "../../database/data.json");
+const uuidv4 = require("uuid/v4");
+
 class PostController {
   async insertPost(req, res) {
-    try {
-      const { title, text, userId } = req.body;
-      await this.postsModel.create({
-        title,
-        text,
-        userId
+    fs.readFile(fileName, "utf-8", (err, data) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      const jsonData = JSON.parse(data);
+      const { text, title } = req.body;
+      jsonData.posts.push({ text, title, id: uuidv4() });
+      const newFile = JSON.stringify(jsonData);
+      fs.writeFile(fileName, newFile, err => {
+        if (err) throw err;
+        console.log("The file has been saved!");
+        res.status(200).end();
       });
-      res.status(200);
-    } catch ({ status = 500, message = "Serverside error" }) {
-      res.status(status).send(message);
-    }
+    });
   }
 
   async getAllPosts(req, res) {
@@ -29,24 +36,40 @@ class PostController {
   }
 
   async updatePost(req, res) {
-    try {
-      const { postId } = req.params;
-      const { title, text } = req.body;
-      const updatedPost = await this.postsModel.update({ title, text }, { where: { id: postId } });
-      res.status(200).json(updatedPost);
-    } catch ({ status = 500, message = "Serverside error" }) {
-      res.status(status).send(message);
-    }
+    fs.readFile(fileName, "utf-8", (err, data) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      const jsonData = JSON.parse(data);
+      const foundIndex = jsonData.posts.findIndex(item => item.id == req.params.postId);
+      jsonData.posts[foundIndex] = {...jsonData.posts[foundIndex], ...req.body};
+      const newFile = JSON.stringify(jsonData);
+      fs.writeFile(fileName, newFile, err => {
+        if (err) throw err;
+        console.log("The file has been saved!");
+        res.status(200).end();
+      });
+    });
   }
 
   async deletePost(req, res) {
-    try {
-      const { postId } = req.params;
-      await this.postsModel.destroy({ where: { id: postId } });
-      res.status(200);
-    } catch ({ status = 500, message = "Serverside error" }) {
-      res.status(status).send(message);
-    }
+    fs.readFile(fileName, "utf-8", (err, data) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      const jsonData = JSON.parse(data);
+      const foundPosts = jsonData.posts.filter(item => item.id != req.params.postId);
+      const newFile = JSON.stringify({ ...jsonData, posts: foundPosts });
+      fs.writeFile(fileName, newFile, err => {
+        if (err) throw err;
+        console.log("The file has been saved!");
+        res.status(200).end();
+      });
+    });
   }
 }
 

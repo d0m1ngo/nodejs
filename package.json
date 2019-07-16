@@ -12,15 +12,15 @@
     "express-session": "^1.15.6",
     "swagger-ui": "^3.23.0",
     "swagger-ui-express": "^4.0.7",
+    "uuid": "^3.3.2",
     "winston": "^3.2.1",
-    "yamljs": "^0.3.0",
-    "nodemon": "1.19.1"
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.2.0",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.4"
+    "nodemon": "1.19.1"
   },
   "scripts": {
     "db:migrate": "sequelize db:migrate",

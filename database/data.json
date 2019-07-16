@@ -1,10 +1,1 @@
-{
-  "posts": [
-    {
-      "id": 1,
-      "text": "Some text post 1",
-      "title": "Some title post 1"
-    }
-  ],
-  "comments": [{ "id": 1, "title": "Comment1", "text": "Comment1", "createdDate": 0, "postId": 1 }]
-}
+{"posts":[{"id":1,"text":"WAZZAp","title":"Some title post 1"},{"text":"some text2","title":"some title2","id":"03463cf5-372a-43c2-a58b-9b40dd1185cb"}],"comments":[{"id":1,"title":"Comment1","text":"Comment1","createdDate":0,"postId":1}]}

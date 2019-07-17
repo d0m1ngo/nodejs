@@ -1,62 +1,62 @@
 const fs = require("fs");
+const { readFilePromise, writeFilePromise } = require("../helpers/FilePromise");
 const path = require("path");
 const fileName = path.join(__dirname, "../../database/data.json");
 class commentController {
-  async insertPost(req, res) {
+  async insertComment(req, res) {
     try {
-      const { title, text, userId } = req.body;
-      await this.postsModel.create({
-        title,
-        text,
-        userId
-      });
-      res.status(200);
+      const { text, title } = req.body;
+      const { postId } = req.params;
+      const data = await readFilePromise(fileName);
+      const jsonData = JSON.parse(data);
+      jsonData.comments.push({ text, title, id: uuidv4(), postId });
+      const newFile = JSON.stringify(jsonData);
+      await writeFilePromise(fileName, newFile);
+      res.status(200).end();
     } catch ({ status = 500, message = "Serverside error" }) {
       res.status(status).send(message);
     }
   }
 
   async getAllComments(req, res) {
-    fs.readFile(fileName, "utf-8", (err, data) => {
-      if (err) {
-        console.log(err);
-        res.sendStatus(500);
-        return;
-      }
+    try {
+      const data = await readFilePromise(fileName);
+      console.log(data);
       const jsonData = JSON.parse(data);
       const foundComments = jsonData.comments.filter(item => item.postId == req.params.postId);
+      console.log(foundComments);
       res.json(foundComments);
-    });
+    } catch (error) {
+      res.sendStatus(500);
+    }
   }
 
-  async updatePost(req, res) {
+  async updateComment(req, res) {
     try {
-      const { postId } = req.params;
-      const { title, text } = req.body;
-      const updatedPost = await this.postsModel.update({ title, text }, { where: { id: postId } });
-      res.status(200).json(updatedPost);
+      const { postId, commentId } = req.params;
+      const data = await readFilePromise(fileName);
+      const jsonData = JSON.parse(data);
+      const foundIndex = jsonData.comments.findIndex(item => item.id == commentId && item.postId == postId);
+      jsonData.posts[foundIndex] = { ...jsonData.posts[foundIndex], ...req.body };
+      await writeFilePromise(fileName, newFile);
+      res.status(200).end();
     } catch ({ status = 500, message = "Serverside error" }) {
       res.status(status).send(message);
     }
   }
 
   async deleteComment(req, res) {
-    fs.readFile(fileName, "utf-8", (err, data) => {
-      if (err) {
-        console.log(err);
-        res.sendStatus(500);
-        return;
-      }
+    try {
+      const data = await readFilePromise(fileName);
       const jsonData = JSON.parse(data);
       const foundComments = jsonData.comments.filter(item => item.postId == req.params.postId);
       const filteredComments = foundComments.filter(item => item.id != req.params.commentId);
       const newFile = JSON.stringify({ ...jsonData, comments: filteredComments });
-      fs.writeFile(fileName, newFile, err => {
-        if (err) throw err;
-        console.log("The file has been saved!");
-        res.status(200).end();
-      });
-    });
+      await writeFilePromise(fileName, newFile);
+      res.status(200).end();
+    } catch (error) {
+      res.sendStatus(500);
+    }
   }
 }
 

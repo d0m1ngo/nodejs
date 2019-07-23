@@ -2,7 +2,7 @@ const fs = require("fs");
 const { readFilePromise, writeFilePromise } = require("../helpers/FilePromise");
 const path = require("path");
 const fileName = path.join(__dirname, "../../database/data.json");
-class commentController {
+class CommentController {
   async insertComment(req, res) {
     try {
       const { text, title } = req.body;
@@ -61,5 +61,5 @@ class commentController {
 }
 
 module.exports = () => {
-  return new commentController();
+  return new CommentController();
 };

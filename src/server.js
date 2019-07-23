@@ -6,6 +6,7 @@ const path = tail => join(__dirname, tail);
 const posts = require("./routes/posts");
 const comments = require("./routes/comments");
 const stat = require("./routes/stat");
+const users = require("./routes/users");
 const router = express.Router().use("/", swagger);
 const worker = require("./services/freqWorker");
 
@@ -23,6 +24,7 @@ const service = express()
   .use("/posts", posts)
   .use("/comments", comments)
   .use("/stat", stat)
+  .use("/users", users)
   //   .use((req, res) => res.sendFile(path('../public/index.html')))
   .listen(3000, () => {
     console.log(`Listening on : 3000`);

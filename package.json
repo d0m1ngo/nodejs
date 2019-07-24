@@ -11,6 +11,8 @@
     "cron": "^1.7.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
+    "md5": "^2.2.1",
+    "node-fetch": "^2.6.0",
     "swagger-ui": "^3.23.0",
     "swagger-ui-express": "^4.0.7",
     "uuid": "^3.3.2",

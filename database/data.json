@@ -1,5 +1,5 @@
 {
   "posts": [{ "id": 1, "text": "WAZZAp", "title": "Some title post 1" }, { "text": "some text2", "title": "some title2", "id": "03463cf5-372a-43c2-a58b-9b40dd1185cb" }, { "text": "some text2444", "title": "some title212124", "id": "ee5c5d9a-1fcc-435f-be29-5b4aeff3e213" }],
   "comments": [{ "id": 1, "title": "Comment1", "text": "Comment1", "createdAt": 1563745904722, "postId": 1 }],
-  "users": [{ "id": 1, "name": "Isus", "email": "isusluchevce@gmail.com" }, { "id": 2, "name": "Ivan", "email": "ivan@gmail.com" }]
+  "users": [{ "id": 1, "name": "Isus5186353", "email": "b5186353@urhen.com" }, { "id": 2, "name": "ivan5186848", "email": "b5186848@urhen.com" }]
 }

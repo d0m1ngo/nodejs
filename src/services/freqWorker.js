@@ -7,14 +7,10 @@ module.exports = () => {
     "* * * * *",
     function() {
       console.log("You will see this message every minute");
-      const worker = new Worker(`${__dirname}/../workers/statisticWorker.js`, {
-        workerData: 37
-      });
+      const worker = new Worker(`${__dirname}/../workers/statisticWorker.js`);
       worker.on("message", msg => {
         global.stat = msg;
       });
-      worker.on("error", err => console.error(`worker error: ${err}`));
-      worker.on("exit", code => console.log(`worker exit code: ${code}`));
     },
     null,
     true,

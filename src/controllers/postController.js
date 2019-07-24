@@ -1,51 +1,58 @@
 const fs = require("fs");
 const path = require("path");
+const { readFilePromise, writeFilePromise } = require("../helpers/FilePromise");
 const fileName = path.join(__dirname, "../../database/data.json");
+const uuidv4 = require("uuid/v4");
+
 class PostController {
   async insertPost(req, res) {
     try {
-      const { title, text, userId } = req.body;
-      await this.postsModel.create({
-        title,
-        text,
-        userId
-      });
-      res.status(200);
-    } catch ({ status = 500, message = "Serverside error" }) {
-      res.status(status).send(message);
+      const { text, title } = req.body;
+      const data = await readFilePromise(fileName);
+      const jsonData = JSON.parse(data);
+      jsonData.posts.push({ text, title, id: uuidv4() });
+      const newFile = JSON.stringify(jsonData);
+      await writeFilePromise(fileName, newFile);
+      res.status(200).end();
+    } catch (error) {
+      res.sendStatus(500);
     }
   }
 
   async getAllPosts(req, res) {
-    fs.readFile(fileName, "utf-8", (err, data) => {
-      if (err) {
-        console.log(err);
-        res.sendStatus(500);
-        return;
-      }
+    try {
+      const data = await readFilePromise(fileName);
       const jsonData = JSON.parse(data);
       res.json(jsonData.posts);
-    });
+    } catch (error) {
+      res.sendStatus(500);
+    }
   }
 
   async updatePost(req, res) {
     try {
-      const { postId } = req.params;
-      const { title, text } = req.body;
-      const updatedPost = await this.postsModel.update({ title, text }, { where: { id: postId } });
-      res.status(200).json(updatedPost);
-    } catch ({ status = 500, message = "Serverside error" }) {
-      res.status(status).send(message);
+      const data = await readFilePromise(fileName);
+      const jsonData = JSON.parse(data);
+      const foundIndex = jsonData.posts.findIndex(item => item.id == req.params.postId);
+      jsonData.posts[foundIndex] = { ...jsonData.posts[foundIndex], ...req.body };
+      const newFile = JSON.stringify(jsonData);
+      await writeFilePromise(fileName, newFile);
+      res.status(200).end();
+    } catch (error) {
+      res.sendStatus(500);
     }
   }
 
   async deletePost(req, res) {
     try {
-      const { postId } = req.params;
-      await this.postsModel.destroy({ where: { id: postId } });
-      res.status(200);
-    } catch ({ status = 500, message = "Serverside error" }) {
-      res.status(status).send(message);
+      const data = await readFilePromise(fileName);
+      const jsonData = JSON.parse(data);
+      const foundPosts = jsonData.posts.filter(item => item.id != req.params.postId);
+      const newFile = JSON.stringify({ ...jsonData, posts: foundPosts });
+      await writeFilePromise(fileName, newFile);
+      res.status(200).end();
+    } catch (error) {
+      res.sendStatus(500);
     }
   }
 }

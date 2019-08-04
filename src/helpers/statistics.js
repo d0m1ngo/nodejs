@@ -1,21 +1,21 @@
-module.exports = posts => {
-  return posts.reduce(
+module.exports = comments => {
+  return comments.reduce(
     (acc, post) => {
       const date = new Date().valueOf();
       const hours = Math.abs(date - post.createdAt) / 36e5;
       if (hours < 24) {
-        acc.postsPerDay++;
+        acc.commentsPerDay++;
       } else if (hours < 168) {
-        acc.postsPerWeek++;
+        acc.commentsPerWeek++;
       } else if (hours < 730) {
-        acc.postsPerMonth++;
+        acc.commentsPerMonth++;
       }
       return acc;
     },
     {
-      postsPerDay: 0,
-      postsPerWeek: 0,
-      postsPerMonth: 0
+      commentsPerDay: 0,
+      commentsPerWeek: 0,
+      commentsPerMonth: 0
     }
   );
 };

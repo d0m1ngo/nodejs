@@ -20,16 +20,6 @@ class UsersController {
       res.sendStatus(500);
     }
   }
-
-  async postUserData(req, res) {
-    try {
-      await User.create({ _id: mongoose.Types.ObjectId(), emailAddress: "somemeail", name: "somename" });
-      res.send(200);
-    } catch (error) {
-      console.log(error);
-      res.send(500);
-    }
-  }
 }
 
 module.exports = () => {
